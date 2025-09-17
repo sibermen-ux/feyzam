@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feyza'ya Özel 💌</title>
+  <meta name="description" content="Muhammed'den Feyza'ya özel hazırlanmış HTML sürprizi." />
+  <style>
+    :root{--bg:#0f1021;--card:#111224;--accent:#ff6b8a;--soft:#ffd6e0}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,107,138,0.06), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(255,214,224,0.03), transparent),
+                  var(--bg);
+      color:#fff;line-height:1.5;
+    }
+    .scene{width:min(920px,94vw);padding:28px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);box-shadow:0 10px 30px rgba(2,6,23,0.6);display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:center}
+    .left{padding:28px}
+    h1{font-size:28px;margin-bottom:10px;letter-spacing:0.2px}
+    p.lead{margin-bottom:18px;opacity:0.9}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .big-heart{width:120px;height:120px;border-radius:60px;background:linear-gradient(180deg,var(--accent),#ff355e);position:relative;margin:18px auto;transform:rotate(-45deg);display:grid;place-items:center;cursor:pointer;transition:transform .25s ease}
+    .big-heart:before,.big-heart:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:linear-gradient(180deg,var(--accent),#ff355e)}
+    .big-heart:before{top:-60px}
+    .big-heart:after{left:60px}
+    .big-heart .heart-face{transform:rotate(45deg);font-size:42px}
+    .big-heart:hover{transform:scale(1.06) rotate(-45deg)}
+
+    .controls{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    button{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border:none;padding:10px 14px;border-radius:10px;color:inherit;cursor:pointer;font-weight:600;transition:background .2s}
+    button.primary{background:var(--accent);color:#fff;box-shadow:0 8px 18px rgba(255,107,138,0.14)}
+    button:hover{background:rgba(255,255,255,0.08)}
+
+    .reveal{margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center}
+    .message{font-size:18px;line-height:1.45;max-width:420px}
+    .signature{margin-top:12px;font-size:14px;opacity:0.85}
+
+    .hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .heart{position:absolute;width:18px;height:18px;transform:rotate(-45deg);opacity:0.9}
+    .heart:before,.heart:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:linear-gradient(180deg,var(--accent),#ff355e)}
+    .heart:before{top:-9px}
+    .heart:after{left:9px}
+
+    .right{position:relative;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .preview{width:100%;height:300px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px;text-align:center}
+    footer.note{margin-top:10px;font-size:13px;opacity:0.7;text-align:center}
+
+    @media (max-width:880px){.scene{grid-template-columns:1fr;}.right{order:-1}.preview{height:auto;min-height:200px}}
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="left">
+      <h1>Sevgili Feyza 💖</h1>
+      <p class="lead">Kalbe tıkla veya butona bas, sana özel mesajımı gör.</p>
+
+      <div class="card">
+        <input id="name" type="hidden" value="Feyza" />
+
+        <div class="controls">
+          <button id="revealBtn" class="primary">Sürprizi Aç</button>
+          <button id="speakBtn">Sesli Söyle</button>
+        </div>
+
+        <div class="reveal" id="revealArea">
+          <div class="message" id="message">💌 Burada sana özel bir mesaj var...</div>
+        </div>
+
+        <div class="signature" id="signature">Sevgilerle, <strong>Muhammed</strong> 💌</div>
+      </div>
+
+      <div style="text-align:center;margin-top:18px">
+        <div class="big-heart" id="bigHeart" title="Tıkla!">
+          <div class="heart-face">♥</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right">
+      <div class="preview card" id="preview">
+        <div style="font-size:22px">seni seviyorum</div>
+        <div style="margin-top:8px;opacity:0.9">evlenelim</div>
+      </div>
+      <footer class="note">göt 🌸</footer>
+    </div>
+
+    <div class="hearts" id="heartsContainer"></div>
+  </div>
+
+  <script>
+    const defaultMessage = (name) => `Sevgili ${name},\n\nSen hayatıma girdiğinden beri her şey çok daha anlamlı. Gözlerindeki ışık, gülüşündeki sıcaklık ve kalbindeki güzellik bana her gün mutluluk veriyor. Seninle olmak en güzel armağan. Seni çok seviyorum.\n\nHer zaman yanında, Muhammed`;
+
+    const nameInput = document.getElementById('name');
+    const messageEl = document.getElementById('message');
+    const signatureEl = document.getElementById('signature');
+    const revealBtn = document.getElementById('revealBtn');
+    const speakBtn = document.getElementById('speakBtn');
+    const bigHeart = document.getElementById('bigHeart');
+    const heartsContainer = document.getElementById('heartsContainer');
+
+    function showMessage(){
+      const name = (nameInput.value || 'Feyza').trim();
+      const text = defaultMessage(name).replace(/\n/g, '<br>');
+      messageEl.innerHTML = text;
+      burstHearts(12);
+    }
+
+    function speakMessage(){
+      if(!('speechSynthesis' in window)){
+        alert('Tarayıcınız konuşma desteği sunmuyor.');
+        return;
+      }
+      const name = (nameInput.value || 'Feyza').trim();
+      const utter = new SpeechSynthesisUtterance(defaultMessage(name));
+      utter.lang = 'tr-TR';
+      utter.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    revealBtn.addEventListener('click', showMessage);
+    speakBtn.addEventListener('click', speakMessage);
+    bigHeart.addEventListener('click', showMessage);
+
+    function burstHearts(count){
+      for(let i=0;i<count;i++){
+        const h = document.createElement('div');
+        h.className = 'heart';
+        const size = 10 + Math.round(Math.random()*18);
+        h.style.width = size+'px';
+        h.style.height = size+'px';
+        h.style.left = (20 + Math.random()*60) + '%';
+        h.style.bottom = (10 + Math.random()*10) + '%';
+        h.style.opacity = 0.9;
+        h.style.transform = 'rotate(-45deg)';
+        heartsContainer.appendChild(h);
+        const duration = 2800 + Math.random()*1600;
+        h.style.transition = `transform ${duration}ms cubic-bezier(.2,.9,.2,1), opacity ${duration}ms linear`;
+        setTimeout(()=>{
+          h.style.transform = `translateY(-${300 + Math.random()*200}px) scale(${0.6 + Math.random()*0.6}) rotate(-25deg)`;
+          h.style.opacity = 0;
+        }, 50 + Math.random()*200);
+        setTimeout(()=>{ h.remove(); }, duration + 300);
+      }
+    }
+
+    setInterval(()=>{ burstHearts(1 + Math.floor(Math.random()*2)); }, 2200);
+  </script>
+</body>
+</html>
